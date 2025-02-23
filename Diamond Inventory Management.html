@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Diamond Inventory Management</title>
+    <link rel="icon" type="image/x-icon" href="./images/diamond Logo.png" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #ffffff;
+        color: #333;
+        background-image: url("./bg\ image.png");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 100%;
+        overflow-y: auto; /* Enable vertical scrolling */
+        position: relative;
+      }
+
+      /* Add this to create a background overlay */
+      body::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.945); /* Dark overlay with opacity */
+        z-index: -1; /* Ensures overlay is behind the content */
+      }
+      h1 {
+        font-size: 3rem;
+        color: #4caf50;
+        text-align: center;
+        font-weight: bold;
+        margin: 20px 0;
+        padding: 10px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        background-color: #333;
+        color: white;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      h1:hover {
+        transform: scale(1.05);
+        color: #3b75e2;
+        background-color: #cfcaca;
+      }
+
+      header {
+        background-image: url("./images/diamond\ Logo.png"),
+          linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8));
+        background-size: cover;
+        background-position: cover;
+        background-repeat: no-repeat;
+        padding: 120px 0;
+        color: #ffffff;
+        text-align: center;
+        height: 80vh; /* Adjusted to be responsive */
+        position: relative;
+        overflow: hidden;
+      }
+
+      header::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+        z-index: 1;
+      }
+
+      header h1 {
+        font-size: 50px;
+        font-weight: bold;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        z-index: 2;
+        position: relative;
+      }
+
+      header p {
+        font-size: 18px;
+        font-weight: 400;
+        max-width: 600px;
+        margin: 20px auto;
+        z-index: 2;
+        position: relative;
+        line-height: 1.6;
+      }
+
+      header .cta-button {
+        background-color: #f39c12; /* Call-to-action button color */
+        color: #fff;
+        font-size: 16px;
+        padding: 15px 30px;
+        border-radius: 30px;
+        text-decoration: none;
+        display: inline-block;
+        margin-top: 30px;
+        transition: background-color 0.3s, transform 0.3s;
+        z-index: 2;
+        position: relative;
+      }
+
+      header .cta-button:hover {
+        background-color: #e67e22; /* Darker on hover */
+        transform: scale(1.1);
+      }
+
+      /* Card Style for the Paragraph with Transparent Blurry Border */
+      header p.card {
+        font-size: 1.1rem;
+        font-weight: 500;
+        color: #f1eeee;
+        max-width: 50%;
+        margin: 20px auto;
+        padding: 25px;
+        text-align: center;
+        line-height: 1.8;
+        background-color: rgba(255, 255, 255, 0);
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease-in-out;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        backdrop-filter: blur(4px);
+
+        top: 20%;
+      }
+
+      /* Hover effect for the card */
+      header p.card:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        transform: translateY(-5px);
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(6px);
+      }
+
+      /* Responsive design for smaller devices */
+      @media (max-width: 768px) {
+        header p.card {
+          font-size: 1rem;
+          max-width: 90%;
+          padding: 20px;
+          line-height: 1.7;
+        }
+      }
+
+      @media (max-width: 480px) {
+        header p.card {
+          font-size: 0.9rem;
+          max-width: 95%;
+          padding: 15px;
+          line-height: 1.6;
+        }
+      }
+
+      .navbar {
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 30px;
+        width: 100%;
+        max-width: 1300px; /* For centered content */
+        margin: 0 auto;
+      }
+
+      nav .logo {
+        font-size: 24px;
+        color: #ffffff;
+        font-weight: bold;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+      }
+
+      nav ul {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      nav ul li {
+        margin: 0 20px;
+      }
+
+      nav a {
+        color: #ffffff;
+        font-size: 18px;
+        font-weight: 500;
+        text-decoration: none;
+        padding: 10px 20px;
+        border-radius: 30px;
+        position: relative;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+      }
+
+      nav a::before {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 2px;
+        background-color: #f39c12;
+        bottom: 0;
+        left: 50%;
+        transition: all 0.3s ease;
+      }
+
+      nav a:hover {
+        background-color: #f39c12; /* Gold color */
+        transform: scale(1.1);
+      }
+
+      nav a:hover::before {
+        width: 100%;
+        left: 0;
+      }
+
+      @media (max-width: 768px) {
+        nav {
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 10px 20px;
+        }
+
+        nav ul {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        nav ul li {
+          margin: 10px 0;
+        }
+      }
+
+      /* Sections */
+      section {
+        padding: 40px;
+        background-color: rgba(255, 255, 255, 0.8);
+        margin: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        min-height: 100vh; /* Make sure sections fill the screen */
+        margin-bottom: 50px; /* Add space between sections */
+      }
+
+      section h2 {
+        text-align: center;
+        color: #00274d;
+      }
+
+      section p {
+        text-align: center;
+        color: #333;
+      }
+      /* Dashboard Enhancements */
+      .dashboard-home {
+        text-align: center;
+        padding: 50px;
+        background-color: #9fb1c4; /* Light background for the whole dashboard */
+        border-radius: 15px; /* Rounded corners */
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow around the entire section */
+      }
+
+      .stats {
+        display: flex;
+        justify-content: space-evenly;
+        margin-top: 50px;
+        gap: 20px;
+      }
+
+      .stat-card {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 25px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        border-radius: 12px;
+        width: 28%;
+        text-align: center;
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Added box-shadow transition */
+      }
+
+      .stat-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .image-banner img {
+        max-width: 80%;
+        height: auto;
+        border-radius: 12px;
+        padding-top: 20px;
+        transition: transform 0.3s ease-in-out;
+      }
+
+      .image-banner img:hover {
+        transform: scale(1.05); /* Zoom effect on hover */
+      }
+      #home .dashboard-home .intro h2 {
+        font-size: 3rem;
+        color: #00274d;
+        margin-bottom: 20px;
+      }
+      #home .dashboard-home .intro h2:hover {
+        color: #ffffff;
+        transform: scale(1.05);
+      }
+
+      /* About Section Styles */
+      #about {
+        background-color: #f9f9f9;
+        padding: 40px;
+        text-align: center;
+        border-radius: 8px;
+        margin: 20px;
+      }
+
+      #about h2 {
+        font-size: 2.5rem;
+        color: #333;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      #about p {
+        font-size: 1.1rem;
+        color: #555;
+        line-height: 1.8;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 15px;
+      }
+
+      .about-img {
+        max-width: 250px;
+        height: auto;
+        border-radius: 50%;
+        margin-top: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      @media (min-width: 768px) {
+        #about {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        #about p {
+          max-width: 60%;
+          text-align: left;
+        }
+
+        .about-img {
+          max-width: 300px;
+        }
+      }
+
+      /* Features Section */
+      #Features {
+        padding: 60px 0;
+        background-color: #f9f9f9;
+        text-align: center;
+      }
+
+      .features-container {
+        display: flex;
+        justify-content: space-around;
+        gap: 30px;
+        flex-wrap: wrap;
+        padding: 0 20px;
+      }
+
+      .feature-box {
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 200px;
+        height: 250px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        text-align: center;
+      }
+
+      .feature-box img {
+        max-width: 100px;
+        margin-bottom: 20px;
+      }
+
+      .feature-box h4 {
+        font-size: 18px;
+        margin: 10px 0;
+      }
+
+      .feature-box p {
+        font-size: 14px;
+        color: #555;
+      }
+
+      .feature-box:hover {
+        background-color: #f1f1f1;
+        transform: scale(1.05);
+        transition: transform 0.3s ease, background-color 0.3s ease;
+      }
+
+      /* Contact Section Styling */
+      #contact {
+        background-color: #f9f9f9; /* Light background color */
+        padding: 50px 20px;
+        text-align: center;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        margin-top: 50px;
+      }
+
+      #contact h2 {
+        font-size: 2.5rem;
+        color: #333;
+        margin-bottom: 30px;
+      }
+
+      #contactForm {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px; /* Spacing between input fields */
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      #contactForm input,
+      #contactForm textarea {
+        width: 100%;
+        padding: 12px;
+        font-size: 1rem;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        transition: border-color 0.3s ease;
+      }
+
+      #contactForm input:focus,
+      #contactForm textarea:focus {
+        border-color: #4caf50; /* Green border when focused */
+        outline: none;
+      }
+
+      #contactForm textarea {
+        height: 150px;
+        resize: none; /* Disable resizing for better control */
+      }
+
+      #contactForm button {
+        background-color: #00274d; /* Green button */
+        color: white;
+        padding: 12px 25px;
+        font-size: 1rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+      }
+
+      #contactForm button:hover {
+        background-color: #12da65; /* Darker green on hover */
+        transform: scale(1.05); /* Slight button scale effect */
+      }
+
+      #responseMessage {
+        margin-top: 20px;
+        font-size: 1.2rem;
+        color: #333;
+      }
+
+      /* Responsive Styles */
+      @media (max-width: 768px) {
+        #contact h2 {
+          font-size: 2rem; /* Smaller heading on mobile */
+        }
+
+        #contactForm {
+          padding: 20px; /* Reduced padding for mobile */
+        }
+
+        #contactForm input,
+        #contactForm textarea {
+          font-size: 0.9rem; /* Smaller font size on mobile */
+          padding: 10px;
+        }
+
+        #contactForm button {
+          padding: 10px 20px; /* Smaller button on mobile */
+          font-size: 0.9rem;
+        }
+
+        #responseMessage {
+          font-size: 1rem; /* Smaller response message font */
+        }
+      }
+
+      @media (max-width: 480px) {
+        #contact h2 {
+          font-size: 1.8rem; /* Even smaller heading on very small screens */
+        }
+
+        #contactForm {
+          width: 100%; /* Full width on smaller screens */
+        }
+
+        #contactForm input,
+        #contactForm textarea {
+          padding: 8px; /* Adjust padding for very small screens */
+          font-size: 0.85rem;
+        }
+
+        #contactForm button {
+          padding: 8px 18px; /* Adjust button size for very small screens */
+          font-size: 0.85rem;
+        }
+
+        #responseMessage {
+          font-size: 0.9rem; /* Adjust response message font size */
+        }
+      }
+
+      /* Auth Section */
+      #auth {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f7f7f7;
+      }
+
+      .auth-container {
+        width: 100%;
+        max-width: 500px;
+        padding: 20px;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .auth-toggle {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+      }
+
+      .tab-btn {
+        padding: 10px 20px;
+        border: 1px solid #ccc;
+        background-color: #f0f0f0;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        width: 50%;
+      }
+
+      .tab-btn.active {
+        background-color: #00274d;
+        color: white;
+        border: 1px solid #00274d;
+      }
+
+      .auth-form {
+        display: none;
+      }
+
+      .auth-form.active {
+        display: block;
+      }
+
+      .input-group {
+        margin-bottom: 20px;
+      }
+
+      .input-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+
+      .input-group input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      button[type="submit"] {
+        width: 100%;
+        padding: 10px;
+        background-color: #00274d;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+      }
+
+      button[type="submit"]:hover {
+        background-color: #004080;
+      }
+
+      /* Responsive Design */
+      @media screen and (max-width: 768px) {
+        .auth-container {
+          width: 90%;
+        }
+      }
+
+      /* Responsive Design */
+      @media screen and (max-width: 768px) {
+        .features-container {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .feature-card {
+          width: 80%; /* Make cards wider on smaller screens */
+          margin-bottom: 20px;
+        }
+      }
+
+      /* Forms */
+      form input,
+      form textarea {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+      }
+
+      form button {
+        background-color: #00274d;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      form button:hover {
+        background-color: #004080;
+      }
+
+      /* Footer */
+      footer {
+        text-align: center;
+        padding: 20px;
+        background-color: #00274d;
+        color: white;
+      }
+
+      /* Responsive Design */
+      @media screen and (max-width: 768px) {
+        .stats {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .stat-card {
+          width: 80%;
+          margin-bottom: 20px;
+        }
+
+        .features-container {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .feature-card {
+          width: 80%;
+          margin-bottom: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class=".cta-button">
+      <h1>Diamond Inventory Management</h1>
+      <p class="card">
+        A Diamond Management System is a software platform that helps businesses
+        efficiently manage diamond inventory, track sales and purchases, monitor
+        quality and certifications, and streamline customer and supplier
+        relationships. It ensures accurate records, security, and compliance,
+        ultimately improving business efficiency and decision-making in the
+        diamond industry.
+      </p>
+      <nav class="navbar">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#Features">Features</a>
+        <a href="#contact">Contact</a>
+        <a href="SignUp.html">Sign In</a>
+      </nav>
+    </header>
+
+    <!-- Home Page Section (Dashboard) -->
+    <section id="home" class="active">
+      <div class="dashboard-home">
+        <div class="intro">
+          <h2>Welcome to Your Dashboard</h2>
+          <p>
+            Manage your diamond inventory easily with our intuitive and secure
+            platform.
+          </p>
+        </div>
+
+        <div class="stats">
+          <div class="stat-card">
+            <h3>Inventory Overview</h3>
+            <p>Items: 125</p>
+          </div>
+          <div class="stat-card">
+            <h3>Recent Activity</h3>
+            <p>Last updated: 2 hours ago</p>
+          </div>
+        </div>
+
+        <div class="image-banner">
+          <img src="./images/Dashboard.webp" alt="Diamonds" />
+        </div>
+      </div>
+    </section>
+
+    <!-- About Page Section -->
+    <section id="about">
+      <h2>About Us</h2>
+      <p>
+        "Diamond Inventory Management is an innovative platform designed to
+        simplify and streamline the process of managing diamond stock and
+        workforce tasks. It offers businesses a centralized solution for
+        tracking raw and certified diamonds, assigning tasks to employees, and
+        maintaining transparency across the supply chain. Our system is equipped
+        with real-time updates, security features, and customizable reporting
+        tools, helping businesses improve efficiency, reduce errors, and stay
+        ahead in the fast-paced diamond industry. Whether"Diamond Inventory
+        Management is an innovative platform designed to simplify and streamline
+        the process of managing diamond stock and workforce tasks. It offers
+        businesses a centralized solution for tracking raw and certified
+        diamonds, assigning tasks to employees, and maintaining transparency
+        across the supply chain. Our system is equipped with real-time updates,
+        security features, and customizable reporting tools, helping businesses
+        improve efficiency, reduce errors, and stay ahead in the fast-paced
+        diamond industry. Whether you're dealing with inventory, workforce
+        productivity, or event tracking, our platform ensures seamless
+        operations for optimal results."
+      </p>
+      <img src="./images/logo.png" alt="About Us" class="about-img" />
+    </section>
+
+    <section id="Features">
+      <h2>Our Features</h2>
+      <div class="features-container">
+        <div class="feature-box">
+          <img
+            src="https://www.skunexus.com/hubfs/uide%20on%20real-time%20inventory%20tracking%20by%20SkuNexus%2C%20showcasing%20it%20as%20the%20best%20software%20in%20the%20field.webp"
+            alt="Feature 1"
+          />
+          <h4>Real-Time Inventory Tracking</h4>
+          <p>
+            Stay on top of your diamond stock with real-time updates. Track raw
+            and certified diamonds across your entire inventory, ensuring
+            accurate and up-to-date information at all times..
+          </p>
+        </div>
+        <div class="feature-box">
+          <img
+            src="https://projectsly.com/images/task-management-system-screenshot-1.png?v=1691124479409199525"
+            alt="Feature 2"
+          />
+          <h4>Employee Task Management</h4>
+          <p>
+            Efficiently assign tasks to employees with a streamlined workflow.
+            Our system helps you track task progress, monitor performance, and
+            ensure deadlines are met, boosting overall productivity.
+          </p>
+        </div>
+        <div class="feature-box">
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmtNBnKiAzmEq-mNvWVIORsEoMNi-gydX51Q&s"
+            alt="Feature 3"
+          />
+          <h4>Customizable Reporting Tools</h4>
+          <p>
+            Generate detailed reports based on specific business needs.Offer
+            insights into inventory levels, workforce performance, sales,help
+            you make informed decisions.
+          </p>
+        </div>
+        <div class="feature-box">
+          <img
+            src="https://sinch.com/wp-content/uploads/2024/08/Sinch-Blog-What-is-a-push-notification-handset_1400x1014-2.png"
+            alt="Real-Time Notifications"
+          />
+          <h4>Real-Time Notifications</h4>
+          <p>
+            Stay informed with real-time alerts for important activities, like
+            low inventory levels, task completion, and security updates,
+            ensuring you never miss a beat.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Page Section -->
+    <section id="contact">
+      <h2>Contact Us</h2>
+      <form id="contactForm">
+        <input type="text" id="name" placeholder="Your Name" required />
+        <input type="email" id="email" placeholder="Your Email" required />
+        <textarea id="message" placeholder="Your Message" required></textarea>
+        <button type="submit">Submit</button>
+      </form>
+      <p id="responseMessage"></p>
+    </section>
+
+    <footer>
+      <p>&copy; 2025 Diamond Inventory Management. All Rights Reserved.</p>
+    </footer>
+  </body>
+</html>
